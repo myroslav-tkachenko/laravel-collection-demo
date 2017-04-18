@@ -14,7 +14,7 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        $items = auth()->user()->items;
         return $items;
         //
     }
@@ -41,6 +41,7 @@ class ItemsController extends Controller
 
         $item->title = request('name');
         $item->link = request('link');
+        $item->user_id = auth()->user()->id;
 
         $item->save();
 

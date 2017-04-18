@@ -11,9 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', function () {
+        return view('home');
+    })->name('home');
 
+    Route::resource('items', 'ItemsController');
+});
 
-Route::resource('items', 'ItemsController');
+Route::get('/login', 'SessionController@login')->name('login');
+Route::post('/login', 'SessionController@check');
+Route::get('/logout', 'SessionController@logout');
