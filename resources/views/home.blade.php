@@ -20,14 +20,43 @@
         </style>
     </head>
     <body>
+
+    <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                @if (auth()->check())
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }} <span class="caret"></span></a>
+                @else
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Not logged <span class="caret"></span></a>                
+                @endif
+                <ul class="dropdown-menu">
+                  <li><a href="/logout">Logout</a></li>
+                </ul>
+
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
         <div class="container" id="rest-client" v-cloak>
             <h1 class="text-center">@{{ message }}</h1>
-
             
             <div class="panel panel-info" v-for="item in items">
                   <div class="panel-heading">
                         <h3 class="panel-title">
-                            @{{ item.title }}
+                            @{{ item.name }}
                             <a href="#!" class="pull-right" v-on:click="deleteItem(item)">
                                 X
                             </a>
