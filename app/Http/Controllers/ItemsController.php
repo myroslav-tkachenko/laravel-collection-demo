@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Item;
+use Auth;
 
 class ItemsController extends Controller
 {
@@ -14,9 +15,8 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        $items = auth()->user()->items;
+        $items = Auth::user()->items;
         return $items;
-        //
     }
 
     /**
@@ -37,16 +37,12 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        $item = new Item;
-
-        $item->title = request('name');
-        $item->link = request('link');
-        $item->user_id = auth()->user()->id;
-
-        $item->save();
+        Auth::user()->items()->create([
+            'name' => request('name'),
+            'link' => request('link')
+        ]);
 
         return response('', 201);
-        //
     }
 
     /**

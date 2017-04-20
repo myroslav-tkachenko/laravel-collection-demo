@@ -19,6 +19,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('items', 'ItemsController');
 });
 
-Route::get('/login', 'SessionController@login')->name('login');
-Route::post('/login', 'SessionController@check');
-Route::get('/logout', 'SessionController@logout');
+Route::get('login', 'SessionController@login')->name('login');
+Route::post('login', 'SessionController@check');
+Route::get('logout', 'SessionController@logout')->name('logout');
