@@ -37,12 +37,23 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        Auth::user()->items()->create([
+        $rules = [
+            'name' => 'required|min:3',
+            'link' => 'required|min:3|url'
+        ];
+
+        $data = [
             'name' => request('name'),
             'link' => request('link')
-        ]);
+        ];
 
-        return response('', 201);
+        $validator = \Validator::make($data, $rules);
+        $validator->validate();
+
+        if ($validator->passes()) {
+            Auth::user()->items()->create($data);
+            return response('', 201);
+        }
     }
 
     /**

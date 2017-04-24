@@ -110,17 +110,29 @@
 
                         <!--<input type="hidden" name="_METHOD" value="PUT"/>-->
                         
-                        <div class="form-group">
+                        <div class="form-group" v-bind:class="{'has-error': errors.name}">
                             <label for="name" class="col-sm-2 control-label">Name:</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" id="name" class="form-control" value="" required="required" title="" v-model="newItem.name">
+
+                                <ul v-if="errors.name" class="text-danger">
+                                    <li v-for="error in errors.name">
+                                        @{{ error }}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" v-bind:class="{'has-error': errors.link}">
                             <label for="link" class="col-sm-2 control-label">Link:</label>
                             <div class="col-sm-10">
                                 <input type="text" name="link" id="link" class="form-control" value="" required="required" title="" v-model="newItem.link">
+
+                                <ul v-if="errors.link" class="text-danger">
+                                    <li v-for="error in errors.link">
+                                        @{{ error }}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 
@@ -131,6 +143,7 @@
                         </div>
 
                     </form>
+
                 </div>
             </div>
             @{{ editedItem }}
@@ -157,7 +170,11 @@
                         name: '',
                         link: ''
                     },
-                    editedItem: null
+                    editedItem: null,
+                    errors: {
+                        name: '',
+                        link: ''
+                    },
                 },
                 computed: {
 
@@ -177,13 +194,19 @@
                     getItems: function() {
                         this.$http.get('/items').then(response => {
                             this.items = response.body;
+                            this.errors = {
+                                name: '',
+                                link: ''
+                            };
                         });
                     },
                     postItem: function() {
-                        this.$http.post('/items', this.newItem).then(function() {
+                        this.$http.post('/items', this.newItem).then(function(response) {
                             this.getItems();
                             this.newItem.name = "";
                             this.newItem.link = "";
+                        }, function(response) {
+                            this.errors = response.body;
                         });
                     },
                     deleteItem: function(item) {
